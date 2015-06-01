@@ -16,15 +16,16 @@ curl --silent -o output.json 'http://api.openweathermap.org/data/2.5/forecast/da
 
 high=$(cat output.json | jq .list[0].temp.max)
 low=$(cat output.json | jq .list[0].temp.min)
+day=$(cat output.json | jq .list[0].temp.day)
 wind=$(cat output.json | jq .list[0].speed)
 humidity=$(cat output.json | jq .list[0].humidity)
 main=$(cat output.json | jq .list[0].weather[0].main)
 descrip=$(cat output.json | jq .list[0].weather[0].description)
-echo "High Temp: $high F" >> email.txt
-echo "Low Temp: $low F" >> email.txt
+echo "Temp: $day F" >> email.txt
 echo "Wind: $wind MPH" >> email.txt
 echo "Humidity: $humidity%" >> email.txt
 echo "Main Conditions: $main" >> email.txt
 echo "Description: $descrip" >> email.txt
 
 mail -s "Daily Weather Report" ebeahan@icloud.com < email.txt
+rm -f email.txt output.json
